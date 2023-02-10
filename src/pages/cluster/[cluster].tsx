@@ -4,7 +4,11 @@ import RuleList from "../../components/cluster/List"
 import Navbar from "../../components/cluster/Navbar"
 import type ClusterType from "../../types/Cluster"
 
-const cluster: ClusterType = { id: "cluster-0", name: "Cluster 0", rules: [] }
+const cluster: ClusterType = {
+    id: "cluster-0",
+    name: "Cluster 0",
+    rules: [{ id: "name", type: "number", match: "full" }]
+}
 
 const Cluster: NextPage = () => {
     return (
