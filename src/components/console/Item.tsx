@@ -5,9 +5,8 @@ const Item = ({ name, id, rules }: ConsoleItem) => {
     return (
         <GridItem
             bgColor="white"
-            shadow="lg"
+            shadow="md"
             as={VStack}
-            color="initial"
             rounded="lg"
             h={52}
             alignItems="start"
@@ -16,11 +15,11 @@ const Item = ({ name, id, rules }: ConsoleItem) => {
             <Text fontSize="xl" fontWeight="semibold">
                 {name}
             </Text>
-            <Text fontSize="xs" color="gray.500">
+            <Text fontSize="sm" color="gray.500">
                 {id}
             </Text>
             <Spacer />
-            <Text fontSize="sm" fontWeight="semibold" color="gray.400">
+            <Text fontSize="sm" fontWeight="semibold" color="gray.500">
                 {rules} rules
             </Text>
         </GridItem>

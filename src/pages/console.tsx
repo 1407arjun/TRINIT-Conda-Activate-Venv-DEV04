@@ -1,4 +1,4 @@
-import { VStack } from "@chakra-ui/react"
+import { Divider, VStack } from "@chakra-ui/react"
 import { NextPage } from "next"
 import ConsoleList from "../components/console/List"
 import Navbar from "../components/Navbar"
@@ -12,7 +12,8 @@ const Config: NextPage = () => {
             backgroundRepeat="no-repeat"
             minH="100vh">
             <Navbar />
-            <ConsoleList />
+            <ConsoleList main title="Recent clusters" />
+            <ConsoleList title="All clusters" />
         </VStack>
     )
 }
