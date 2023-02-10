@@ -1,7 +1,7 @@
 import { GridItem, Spacer, Text, VStack } from "@chakra-ui/react"
-import type ConsoleItem from "../../types/ConsoleItem"
+import type Cluster from "../../types/Cluster"
 
-const Item = ({ name, id, rules }: ConsoleItem) => {
+const Item = ({ name, id, rules }: Cluster) => {
     return (
         <GridItem
             bgColor="white"
@@ -20,7 +20,7 @@ const Item = ({ name, id, rules }: ConsoleItem) => {
             </Text>
             <Spacer />
             <Text fontSize="sm" fontWeight="semibold" color="gray.500">
-                {rules} rules
+                {rules.length} rules
             </Text>
         </GridItem>
     )

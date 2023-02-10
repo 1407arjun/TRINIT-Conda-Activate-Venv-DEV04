@@ -1,11 +1,9 @@
 import { Grid, Text, VStack, GridItem, Spacer, Divider } from "@chakra-ui/react"
 import Item from "./Item"
-import type ConsoleItem from "../../types/ConsoleItem"
 import { AddIcon } from "@chakra-ui/icons"
+import type Cluster from "../../types/Cluster"
 
-const clusters: ConsoleItem[] = [
-    { id: "cluster-0", name: "Cluster 0", rules: 5 }
-]
+const clusters: Cluster[] = [{ id: "cluster-0", name: "Cluster 0", rules: [] }]
 
 const List = ({ title, main }: { title: string; main?: boolean }) => {
     return (

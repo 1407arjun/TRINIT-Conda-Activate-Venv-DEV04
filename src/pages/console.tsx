@@ -1,9 +1,9 @@
-import { Divider, VStack } from "@chakra-ui/react"
+import { VStack } from "@chakra-ui/react"
 import { NextPage } from "next"
 import ConsoleList from "../components/console/List"
-import Navbar from "../components/Navbar"
+import Navbar from "../components/console/Navbar"
 
-const Config: NextPage = () => {
+const Console: NextPage = () => {
     return (
         <VStack
             backgroundImage="background.png"
@@ -18,4 +18,4 @@ const Config: NextPage = () => {
     )
 }
 
-export default Config
+export default Console
