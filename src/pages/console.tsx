@@ -1,6 +1,6 @@
 import { VStack } from "@chakra-ui/react"
 import { NextPage } from "next"
-import ConsoleList from "../components/console/List"
+import ClusterList from "../components/console/List"
 import Navbar from "../components/console/Navbar"
 
 const Console: NextPage = () => {
@@ -12,8 +12,8 @@ const Console: NextPage = () => {
             backgroundRepeat="no-repeat"
             minH="100vh">
             <Navbar />
-            <ConsoleList main title="Recent clusters" />
-            <ConsoleList title="All clusters" />
+            <ClusterList main title="Recent clusters" />
+            <ClusterList title="All clusters" />
         </VStack>
     )
 }
