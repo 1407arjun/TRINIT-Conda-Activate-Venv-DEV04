@@ -25,7 +25,8 @@ const List = ({ title, main }: { title: string; main?: boolean }) => {
                         h={52}
                         alignItems="center"
                         px={4}
-                        py={5}>
+                        py={5}
+                        _hover={{ bgColor: "#eeeeee" }}>
                         <Spacer />
                         <AddIcon color="#1c73e8" boxSize={5} />
                         <Text
