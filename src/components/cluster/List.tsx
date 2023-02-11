@@ -56,7 +56,7 @@ const List = ({
                         </TableCaption>
                         <Thead>
                             <Tr>
-                                <Th>Priority</Th>
+                                {/* <Th>Priority</Th> */}
                                 <Th>ID</Th>
                                 <Th>Match type</Th>
                                 <Th>Data type</Th>
@@ -66,7 +66,7 @@ const List = ({
                         <Tbody>
                             {rules.map((rule) => (
                                 <Tr key={rule.id}>
-                                    <Td>{rule.priority}</Td>
+                                    {/* <Td>{rule.priority}</Td> */}
                                     <Td>{rule.id}</Td>
                                     <Td>{rule.match}</Td>
                                     <Td>{rule.type}</Td>

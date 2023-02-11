@@ -30,7 +30,7 @@ const Inputs = ({
     const [idInput, setIdInput] = useState("")
     const [typeInput, setTypeInput] = useState<DataType>(DataType.String)
     const [matchInput, setMatchInput] = useState<MatchType>(MatchType.Full)
-    const [priorityInput, setPriorityInput] = useState<0 | 1 | 2 | 3 | 4 | 5>(0)
+    // const [priorityInput, setPriorityInput] = useState<0 | 1 | 2 | 3 | 4 | 5>(0)
 
     const handleIdInputChange = (e: FormEvent<HTMLInputElement>) => {
         setIsIdError(false)
@@ -40,14 +40,14 @@ const Inputs = ({
         setTypeInput((e.target as HTMLSelectElement).value as DataType)
     const handleMatchInputChange = (e: FormEvent<HTMLSelectElement>) =>
         setMatchInput((e.target as HTMLSelectElement).value as MatchType)
-    const handlePriorityInputChange = (str: string, num: number) =>
-        setPriorityInput(num as 0 | 1 | 2 | 3 | 4 | 5)
+    // const handlePriorityInputChange = (str: string, num: number) =>
+    //     setPriorityInput(num as 0 | 1 | 2 | 3 | 4 | 5)
 
     const [isIdError, setIsIdError] = useState(false)
     const [errorMessage, setErrorMessage] = useState("")
     const isTypeError = false
     const isMatchError = false
-    const isPriorityError = false
+    // const isPriorityError = false
 
     return (
         <HStack alignItems="start" w="100%">
@@ -95,7 +95,7 @@ const Inputs = ({
                     </FormErrorMessage>
                 )}
             </FormControl>
-            <FormControl isInvalid={isPriorityError} isDisabled={disabled}>
+            {/* <FormControl isInvalid={isPriorityError} isDisabled={disabled}>
                 <NumberInput
                     max={5}
                     min={0}
@@ -116,7 +116,7 @@ const Inputs = ({
                         Priority should be between 0 and 5
                     </FormErrorMessage>
                 )}
-            </FormControl>
+            </FormControl> */}
             <IconButton
                 isDisabled={disabled}
                 onClick={() => {
@@ -129,17 +129,14 @@ const Inputs = ({
                             setIsIdError(true)
                         } else {
                             setRules((prev) => {
-                                const arr = [
+                                return [
                                     ...prev,
                                     {
                                         id: idInput,
                                         type: typeInput,
-                                        match: matchInput,
-                                        priority: priorityInput ?? 0
+                                        match: matchInput
                                     }
                                 ]
-                                arr.sort((r, s) => s.priority - r.priority)
-                                return arr
                             })
                         }
                     }
