@@ -3,9 +3,15 @@ import Item from "./Item"
 import { AddIcon } from "@chakra-ui/icons"
 import type Cluster from "../../types/Cluster"
 
-const clusters: Cluster[] = [{ id: "cluster-0", name: "Cluster 0", rules: [] }]
-
-const List = ({ title, main }: { title: string; main?: boolean }) => {
+const List = ({
+    title,
+    main,
+    clusters
+}: {
+    title: string
+    main?: boolean
+    clusters: Cluster[]
+}) => {
     return (
         <VStack spacing={4} w="100%" px={48} pt={main ? 16 : 0} pb={8}>
             <Text
@@ -39,12 +45,6 @@ const List = ({ title, main }: { title: string; main?: boolean }) => {
                         <Spacer />
                     </GridItem>
                 )}
-                {clusters.map((c) => (
-                    <Item key={c.name} {...c} />
-                ))}
-                {clusters.map((c) => (
-                    <Item key={c.name} {...c} />
-                ))}
                 {clusters.map((c) => (
                     <Item key={c.name} {...c} />
                 ))}

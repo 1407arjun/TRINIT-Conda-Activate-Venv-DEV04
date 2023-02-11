@@ -7,30 +7,17 @@ import {
     IconButton,
     Link
 } from "@chakra-ui/react"
-import { NextPage } from "next"
+import { GetServerSidePropsContext, NextPage } from "next"
 import { useState } from "react"
 import RuleList from "../../components/cluster/List"
 import Navbar from "../../components/Navbar"
 import Head from "../../components/Head"
 import type ClusterType from "../../types/Cluster"
-import DataType from "../../types/DataType"
-import MatchType from "../../types/MatchType"
 import Rule from "../../types/Rule"
 
-const cluster: ClusterType = {
-    id: "cluster-0",
-    name: "Cluster 0",
-    rules: [
-        {
-            id: "name",
-            type: DataType.Number,
-            match: MatchType.Full,
-            priority: 1
-        }
-    ]
-}
+import { MongoClient, ServerApiVersion } from "mongodb"
 
-const Cluster: NextPage = () => {
+const Cluster: NextPage<{ cluster: ClusterType }> = ({ cluster }) => {
     const [rules, setRules] = useState<Rule[]>(cluster.rules)
     return (
         <VStack
@@ -75,6 +62,40 @@ const Cluster: NextPage = () => {
             </VStack>
         </VStack>
     )
+}
+
+export const getServerSideProps = async (
+    context: GetServerSidePropsContext
+) => {
+    const { id } = context.query
+    const mongoClient = new MongoClient(process.env.MONGODB_URI!, {
+        //@ts-ignore
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+        serverApi: ServerApiVersion.v1
+    })
+
+    try {
+        const client = await mongoClient.connect()
+        const collection = client.db("clusterbase").collection("clusters")
+        const cluster = await collection.findOne(
+            { id },
+            { projection: { _id: 0 } }
+        )
+
+        if (cluster)
+            return {
+                props: { cluster }
+            }
+        else
+            return {
+                notFound: true
+            }
+    } catch (e: unknown) {
+        console.log(e)
+    }
+
+    return { notFound: true }
 }
 
 export default Cluster
