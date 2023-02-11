@@ -83,17 +83,19 @@ def index():
         pca = PCA(n_components=2, random_state=42)
         subset_pd = pca.fit_transform(subset)
 
-        wcss = []
-        for i in range(2, 10):
-            kmeans = KMeans(n_clusters=i, init="k-means++",
-                            max_iter=500, n_init=10, random_state=123)
-            kmeans.fit(subset_pd)
-            labels = kmeans.labels_
-            wcss.append(silhouette_score(subset_pd, labels, metric='euclidean'))
+        # wcss = []
+        # for i in range(2, 10):
+        #     kmeans = KMeans(n_clusters=i, init="k-means++",
+        #                     max_iter=500, n_init=10, random_state=123)
+        #     kmeans.fit(subset_pd)
+        #     labels = kmeans.labels_
+        #     wcss.append(silhouette_score(subset_pd, labels, metric='euclidean'))
 
-        elbowval = wcss.index(max(wcss))+2
+        # elbowval = wcss.index(max(wcss))+2
 
-        kmeans = KMeans(n_clusters=2, init="k-means++",
+        count=int(request.json['count'])
+
+        kmeans = KMeans(n_clusters=count, init="k-means++",
                         max_iter=500, n_init=10, random_state=123)
         identified_clusters = kmeans.fit_predict(subset_pd)
 
