@@ -28,64 +28,106 @@ def index():
     selection = loader['selection']
     data = loader['data']
     data = pd.DataFrame.from_dict(data, orient='columns')
+    subset = list(data[selection])
+
+    # schema = loader['schema']
+    # schema = pd.DataFrame.from_dict(schema, orient='columns')
+
+    # full = schema[schema['match'] == 'full']
+    # full = list(full['id'])
+    # partial = schema[schema['match'] == 'partial']
+    # partial = list(partial['id'])
+
+    full=['STATUS','PRODUCTCODE']
+    partial=['QUANTITYORDERED','PRICEEACH','SALES','PRODUCTLINE', 'MSRP','CITY', 'STATE','CONTACTLASTNAME', 'CONTACTFIRSTNAME']
+
     subset = data[selection]
+    data=subset.copy()
 
-    categorical = []
+    """Processing the FULL Dependencies variables"""
 
+
+    Label_encoder = LabelEncoder()
+    for item in full:
+        subset[item] = Label_encoder.fit_transform(subset[item])
+
+    """Processing the Partial Dependencies Variables"""
+    categorial=[]
     std = MinMaxScaler()
-
-    for item in selection:
-        if(subset.dtypes[item] == "object"):
-            categorical.append(item)
-            subset[item] = subset[item].apply(str.lower)
+    numerical=[]
+    for item in partial:
+        if(subset.dtypes[item]=='object'):
+            categorial.append(item)
         else:
             subset[[item]] = std.fit_transform(subset[[item]])
 
-    if("gender" in selection):
-        subset['gender'] = subset['gender'].replace(['male'], ['m'])
-        subset['gender'] = subset['gender'].replace(['female'], ['f'])
+    subset=pd.get_dummies(subset,columns=categorial)
 
-    if("Browser Detail" in selection):
-        for i in range(len(subset['Browser Detail'])):
-            if(("google" in subset['Browser Detail'][i]) or ("chrome" in subset['Browser Detail'][i])):
-                subset['Browser Detail'][i] = "Chrome"
-            elif("firefox" in subset['Browser Detail'][i]):
-                subset['Browser Detail'][i] = "Firefox"
-            elif("edge" in subset['Browser Detail'][i]):
-                subset['Browser Detail'][i] = "Edge"
-            elif("safari" in subset['Browser Detail'][i]):
-                subset['Browser Detail'][i] = "Safari" 
-            elif("opera" in subset['Browser Detail'][i]):
-                subset['Browser Detail'][i] = "Opera"
-
-    """Processing the FULL Dependencies variables"""
-    Label_encoder = LabelEncoder()
-    for item in categorical:
-        subset[item] = Label_encoder.fit_transform(subset[item])
-
-
-
-    """Processing the Partial Dependencies Variables"""
-    
+    pca=PCA(n_components=2,random_state=42)
+    subset_pd=pca.fit_transform(subset) 
 
     wcss = []
     for i in range(2, 10):
         kmeans = KMeans(n_clusters=i, init="k-means++",
                         max_iter=500, n_init=10, random_state=123)
-        kmeans.fit(subset)
+        kmeans.fit(subset_pd)
         labels = kmeans.labels_
-        wcss.append(silhouette_score(subset, labels, metric='euclidean'))
+        wcss.append(silhouette_score(subset_pd, labels, metric='euclidean'))
 
-    elbowval = wcss.index(max(wcss))+1
+    elbowval = wcss.index(max(wcss))+2
+    
+    kmeans = KMeans(n_clusters=2, init="k-means++",
+                max_iter=500, n_init=10, random_state=123)
+    identified_clusters = kmeans.fit_predict(subset_pd)
 
-    kmeans = KMeans(n_clusters=elbowval, init="k-means++",
-                    max_iter=500, n_init=10, random_state=123)
-    identified_clusters = kmeans.fit_predict(subset)
-
-    data_with_clusters = pd.DataFrame(subset).copy()
+    data_with_clusters = pd.DataFrame(data).copy()
     data_with_clusters['Cluster'] = identified_clusters
 
-    print(data_with_clusters)
+    fig = px.scatter(data_with_clusters, x = "SALES", y="PRODUCTCODE",
+              color='Cluster', opacity = 0.8,size_max=30,template="plotly_dark",hover_name="STATUS")
+    fig.show()
+
+
+    # categorical = []
+
+    # std = MinMaxScaler()
+
+    # for item in selection:
+    #     if(subset.dtypes[item] == "object"):
+    #         categorical.append(item)
+    #         subset[item] = subset[item].apply(str.lower)
+    #     else:
+    #         subset[[item]] = std.fit_transform(subset[[item]])
+
+    # for item in full:
+    #     if(item in categorical):
+    #         categorical.remove(item)
+
+    # """Processing the FULL Dependencies variables"""
+    # Label_encoder = LabelEncoder()
+    # for item in full:
+    #     subset[item] = Label_encoder.fit_transform(subset[item])
+
+    # """Processing the Partial Dependencies Variables"""
+    # subset=pd.get_dummies(subset,columns=categorical)
+
+    # wcss = []
+    # for i in range(2, 10):
+    #     kmeans = KMeans(n_clusters=i, init="k-means++",
+    #                     max_iter=500, n_init=10, random_state=123)
+    #     kmeans.fit(subset)
+    #     labels = kmeans.labels_
+    #     wcss.append(silhouette_score(subset, labels, metric='euclidean'))
+
+    # elbowval = wcss.index(max(wcss))+1
+    # print(elbowval)
+
+    # kmeans = KMeans(n_clusters=elbowval, init="k-means++",
+    #                 max_iter=500, n_init=10, random_state=123)
+    # identified_clusters = kmeans.fit_predict(subset)
+
+    # data_with_clusters = pd.DataFrame(subset).copy()
+    # data_with_clusters['Cluster'] = identified_clusters
 
     return "hello"
 
