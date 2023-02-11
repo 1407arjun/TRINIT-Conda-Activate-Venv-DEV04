@@ -1,7 +1,10 @@
+import DataType from "./DataType"
+import MatchType from "./MatchType"
+
 type Rule = {
     id: string
-    match: "full" | "partial"
-    type: "string" | "number"
+    match: MatchType
+    type: DataType
 }
 
 export default Rule
