@@ -1,6 +1,10 @@
+import json
 import pandas as pd
 import numpy as np
 import requests
+from flask import Flask, request, jsonify
+from flask_cors import CORS, cross_origin
+
 from sklearn.cluster import KMeans
 from sklearn.cluster import SpectralClustering
 from sklearn.mixture import GaussianMixture
@@ -14,8 +18,21 @@ import plotly.graph_objects as go
 import plotly.io as pio
 from sklearn.metrics import silhouette_score
 
+app = Flask(__name__)
 
-def process(loader):
+
+@app.route('/')
+def home():
+    return "Hello world"
+
+
+@app.route('/', methods=['POST'])
+@cross_origin()
+def index():
+    """data=requests.json"""
+
+    f = open('./notebooks/package.json')
+    loader = json.load(f)
     selection = loader['selection']
     data = loader['data']
     data = pd.DataFrame.from_dict(data, orient='columns')
@@ -63,8 +80,7 @@ def process(loader):
                         max_iter=500, n_init=10, random_state=123)
         kmeans.fit(subset_pd)
         labels = kmeans.labels_
-        wcss.append(silhouette_score(
-            subset_pd, labels, metric='euclidean'))
+        wcss.append(silhouette_score(subset_pd, labels, metric='euclidean'))
 
     elbowval = wcss.index(max(wcss))+2
 
@@ -121,4 +137,9 @@ def process(loader):
     # data_with_clusters['Cluster'] = identified_clusters
 
     # print(data_with_clusters)
+
     return data_with_clusters.to_dict()
+
+
+if __name__ == '__main__':
+    app.run()
