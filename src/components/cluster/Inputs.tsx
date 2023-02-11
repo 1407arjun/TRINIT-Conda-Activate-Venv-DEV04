@@ -104,6 +104,15 @@ const Inputs = ({
                         <NumberDecrementStepper />
                     </NumberInputStepper>
                 </NumberInput>
+                {!isPriorityError ? (
+                    <FormHelperText pl={2}>
+                        Attribute priority (0-5)
+                    </FormHelperText>
+                ) : (
+                    <FormErrorMessage pl={2}>
+                        Priority should be between 0 and 5
+                    </FormErrorMessage>
+                )}
             </FormControl>
             <IconButton
                 onClick={() => {
