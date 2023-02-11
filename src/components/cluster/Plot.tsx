@@ -1,7 +1,8 @@
 import { Text, VStack } from "@chakra-ui/react"
 import dynamic from "next/dynamic"
-import { Dispatch, SetStateAction, useState } from "react"
+import { Dispatch, SetStateAction, useEffect, useState } from "react"
 import type Rule from "../../types/Rule"
+import processRules from "../../util/processRules"
 import Selection from "./Selection"
 
 const Plotly = dynamic(() => import("react-plotly.js"), {
@@ -11,16 +12,26 @@ const Plotly = dynamic(() => import("react-plotly.js"), {
 const Plot = ({
     title,
     data,
+    setData,
     rules
 }: {
     title: string
     data: {
         [key: string]: { [key: string]: string | number }
     }
+    setData: Dispatch<
+        SetStateAction<{
+            [key: string]: { [key: string]: string | number }
+        }>
+    >
     rules: Rule[]
 }) => {
-    const [x, setX] = useState("")
-    const [y, setY] = useState("")
+    const [x, setX] = useState(rules[0].id || "")
+    const [y, setY] = useState(rules[1].id || rules[0].id || "")
+
+    // useEffect(() => {
+    //     processRules(rules, 3, setData)
+    // })
 
     return (
         <VStack spacing={4} w="100%">

@@ -29,22 +29,26 @@ import Inputs from "./Inputs"
 import { DeleteIcon } from "@chakra-ui/icons"
 import { Dispatch, SetStateAction, useState } from "react"
 import axios from "axios"
+import processRules from "../../util/processRules"
 
 const List = ({
     id,
     title,
     rules,
     setRules,
-    count,
-    setCount
+    setData
 }: {
     id: string
     title: string
     rules: Rule[]
     setRules: Dispatch<SetStateAction<Rule[]>>
-    count: number
-    setCount: Dispatch<SetStateAction<number>>
+    setData: Dispatch<
+        SetStateAction<{
+            [key: string]: { [key: string]: string | number }
+        }>
+    >
 }) => {
+    const [count, setCount] = useState(3)
     const [loading, setLoading] = useState(false)
     const toast = useToast()
 
@@ -110,7 +114,7 @@ const List = ({
                 <HStack w="100%" spacing={6}>
                     <FormControl w={64}>
                         <NumberInput
-                            max={5}
+                            max={rules.length}
                             min={2}
                             value={count}
                             onChange={handleCountChange}>
@@ -120,7 +124,9 @@ const List = ({
                                 <NumberDecrementStepper />
                             </NumberInputStepper>
                         </NumberInput>
-                        <FormHelperText pl={2}>No. of clusters</FormHelperText>
+                        <FormHelperText pl={2}>
+                            No. of clusters {`(max ${rules.length})`}
+                        </FormHelperText>
                     </FormControl>
                     <Spacer />
                     <Button
@@ -145,6 +151,7 @@ const List = ({
                                         duration: 5000,
                                         isClosable: true
                                     })
+                                    await processRules(rules, count, setData)
                                 } else {
                                     toast({
                                         title: "Please try again",

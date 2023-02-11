@@ -16,17 +16,16 @@ import Navbar from "../../components/Navbar"
 import Head from "../../components/Head"
 import type ClusterType from "../../types/Cluster"
 import Rule from "../../types/Rule"
+import Plot from "../../components/cluster/Plot"
+import { useRouter } from "next/router"
 
 import { MongoClient, ServerApiVersion } from "mongodb"
-import Plot from "../../components/cluster/Plot"
 import axios from "axios"
-import { useRouter } from "next/router"
 
 const Cluster: NextPage<{
     cluster: ClusterType
 }> = ({ cluster }) => {
     const [rules, setRules] = useState<Rule[]>(cluster.rules)
-    const [count, setCount] = useState(2)
     const [loading, setLoading] = useState(false)
     const toast = useToast()
     const router = useRouter()
@@ -35,21 +34,9 @@ const Cluster: NextPage<{
         [key: string]: { [key: string]: string | number }
     }>({})
 
-    const process = async (rules: Rule[], count: number) => {
-        try {
-            const { data } = await axios.post("/api/process", {
-                rules,
-                count
-            })
-            setData(data)
-        } catch (e) {
-            console.log(e)
-        }
-    }
-
     useEffect(() => {
-        process(rules, count)
-    }, [rules, count])
+        console.log(2)
+    }, [data])
 
     return (
         <VStack
@@ -148,10 +135,14 @@ const Cluster: NextPage<{
                     title={cluster.name}
                     rules={rules}
                     setRules={setRules}
-                    count={count}
-                    setCount={setCount}
+                    setData={setData}
                 />
-                <Plot title={cluster.name} data={data} rules={rules} />
+                <Plot
+                    title={cluster.name}
+                    data={data}
+                    setData={setData}
+                    rules={rules}
+                />
             </VStack>
         </VStack>
     )
