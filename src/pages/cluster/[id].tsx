@@ -16,6 +16,7 @@ import type ClusterType from "../../types/Cluster"
 import Rule from "../../types/Rule"
 
 import { MongoClient, ServerApiVersion } from "mongodb"
+import Plot from "../../components/cluster/Plot"
 
 const Cluster: NextPage<{ cluster: ClusterType }> = ({ cluster }) => {
     const [rules, setRules] = useState<Rule[]>(cluster.rules)
@@ -31,8 +32,8 @@ const Cluster: NextPage<{ cluster: ClusterType }> = ({ cluster }) => {
                 desc={`Configure cluster rules for ${cluster.name}`}
             />
             <Navbar />
-            <VStack spacing={4} w="100%" px={24} py={4}>
-                <HStack w="100%" pb={6}>
+            <VStack spacing={10} w="100%" px={24} py={4}>
+                <HStack w="100%">
                     <IconButton
                         as={Link}
                         href="/console"
@@ -47,18 +48,12 @@ const Cluster: NextPage<{ cluster: ClusterType }> = ({ cluster }) => {
                         {cluster.name}
                     </Heading>
                 </HStack>
-                <Text
-                    fontSize="lg"
-                    w="100%"
-                    fontWeight="semibold"
-                    color="white">
-                    Cluster rules
-                </Text>
                 <RuleList
                     title={cluster.name}
                     rules={rules}
                     setRules={setRules}
                 />
+                <Plot />
             </VStack>
         </VStack>
     )
