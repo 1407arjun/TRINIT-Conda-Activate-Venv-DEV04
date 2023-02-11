@@ -47,7 +47,11 @@ const List = ({
                 <Inputs rules={rules} setRules={setRules} />
                 <TableContainer w="100%">
                     <Table variant="simple">
-                        <TableCaption>Rules defined for {title}</TableCaption>
+                        <TableCaption>
+                            {Object.keys(rules).length} rule
+                            {Object.keys(rules).length === 1 ? "" : "s"} defined
+                            for {title}
+                        </TableCaption>
                         <Thead>
                             <Tr>
                                 <Th>ID</Th>
@@ -64,6 +68,12 @@ const List = ({
                                     <Td>{rules[r].type}</Td>
                                     <Td>
                                         <IconButton
+                                            onClick={() => {
+                                                setRules((prev) => {
+                                                    delete prev[r]
+                                                    return { ...prev }
+                                                })
+                                            }}
                                             colorScheme="red"
                                             size="sm"
                                             aria-label="Delete rule"
