@@ -54,13 +54,19 @@ def index():
             elif("edge" in subset['Browser Detail'][i]):
                 subset['Browser Detail'][i] = "Edge"
             elif("safari" in subset['Browser Detail'][i]):
-                subset['Browser Detail'][i] = "Safari"
+                subset['Browser Detail'][i] = "Safari" 
             elif("opera" in subset['Browser Detail'][i]):
                 subset['Browser Detail'][i] = "Opera"
 
+    """Processing the FULL Dependencies variables"""
     Label_encoder = LabelEncoder()
     for item in categorical:
         subset[item] = Label_encoder.fit_transform(subset[item])
+
+
+
+    """Processing the Partial Dependencies Variables"""
+    
 
     wcss = []
     for i in range(2, 10):

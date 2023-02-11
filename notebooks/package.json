@@ -1,5 +1,32 @@
 {
-    "selection": ["Name","Age","gender","Browser Detail"],
+    "schema": [
+        {
+            "id": "Name",
+            "type": "string",
+            "match": "partial"
+        },
+        {
+            "id": "Age",
+            "type": "number",
+            "match": "full"
+        },
+        {
+            "id": "gender",
+            "type": "string",
+            "match": "full"
+        },
+        {
+            "id": "Browser Detail",
+            "type": "string",
+            "match": "partial"
+        }
+    ],
+    "selection": [
+        "Name",
+        "Age",
+        "gender",
+        "Browser Detail"
+    ],
     "data": [
         {
             "Name": "Shivam Dheer",
