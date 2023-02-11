@@ -1,8 +1,9 @@
-import { VStack, Heading } from "@chakra-ui/react"
+import { VStack } from "@chakra-ui/react"
 import { NextPage } from "next"
 import { useState } from "react"
 import RuleList from "../../components/cluster/List"
 import Navbar from "../../components/cluster/Navbar"
+import Head from "../../components/Head"
 import type ClusterType from "../../types/Cluster"
 import DataType from "../../types/DataType"
 import MatchType from "../../types/MatchType"
@@ -30,6 +31,10 @@ const Cluster: NextPage = () => {
             backgroundSize="contain"
             backgroundRepeat="no-repeat"
             minH="100vh">
+            <Head
+                title={cluster.name}
+                desc={`Configure cluser rules for ${cluster.id}`}
+            />
             <Navbar title={cluster.id} />
             <RuleList title={cluster.id} rules={rules} setRules={setRules} />
         </VStack>

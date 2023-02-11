@@ -2,6 +2,7 @@ import { VStack } from "@chakra-ui/react"
 import { NextPage } from "next"
 import ClusterList from "../components/console/List"
 import Navbar from "../components/console/Navbar"
+import Head from "../components/Head"
 
 const Console: NextPage = () => {
     return (
@@ -11,6 +12,10 @@ const Console: NextPage = () => {
             backgroundSize="contain"
             backgroundRepeat="no-repeat"
             minH="100vh">
+            <Head
+                title="Cluster Dock Console"
+                desc="Console displaying all active clusters."
+            />
             <Navbar />
             <ClusterList main title="Recent clusters" />
             <ClusterList title="All clusters" />

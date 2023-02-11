@@ -17,7 +17,7 @@ import {
 } from "@chakra-ui/react"
 import type Rule from "../../types/Rule"
 import Inputs from "./Inputs"
-import { ArrowDownIcon, ArrowUpIcon, DeleteIcon } from "@chakra-ui/icons"
+import { DeleteIcon } from "@chakra-ui/icons"
 import { Dispatch, SetStateAction } from "react"
 
 const List = ({
