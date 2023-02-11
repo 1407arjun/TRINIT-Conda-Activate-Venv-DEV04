@@ -126,7 +126,7 @@ const Cluster: NextPage<{
                             icon={<DeleteIcon />}
                         />
                     </HStack>
-                    <Text fontSize="md" fontWeight="medium" px={12}>
+                    <Text fontSize="lg" fontWeight="medium" px={12}>
                         {cluster.endpoint}
                     </Text>
                 </VStack>

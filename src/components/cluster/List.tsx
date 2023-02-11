@@ -56,7 +56,7 @@ const List = ({
 
     return (
         <VStack spacing={4} w="100%">
-            <Text fontSize="lg" w="100%" fontWeight="semibold" color="white">
+            <Text fontSize="xl" w="100%" fontWeight="semibold" color="white">
                 Cluster rules
             </Text>
             <VStack

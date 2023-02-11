@@ -11,14 +11,14 @@ const Item = ({ name, id, rules }: Cluster) => {
             href={`/cluster/${id}`}
             _hover={{ bgColor: "#eeeeee", textDecoration: "none" }}>
             <VStack spacing={0} alignItems="start" h={52} p={5}>
-                <Text fontSize="xl" fontWeight="semibold">
+                <Text fontSize="2xl" fontWeight="semibold">
                     {name}
                 </Text>
-                <Text fontSize="sm" fontWeight="medium" color="gray.500">
+                <Text fontSize="md" fontWeight="medium" color="gray.500">
                     {id}
                 </Text>
                 <Spacer />
-                <Text fontSize="sm" fontWeight="semibold" color="gray.500">
+                <Text fontSize="md" fontWeight="semibold" color="gray.500">
                     {rules.length} rules
                 </Text>
             </VStack>

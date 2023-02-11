@@ -76,14 +76,17 @@ const Create = ({ isOpen, onClose }: ModalProps) => {
                             aria-label="Close"
                             icon={<CloseIcon />}
                         />
-                        <Text fontSize="2xl" px={4} fontWeight="medium">
+                        <Text fontSize="3xl" px={4} fontWeight="medium">
                             Create a cluster
                         </Text>
                     </HStack>
                 </ModalHeader>
                 <ModalBody px={20} py={8} w="60%">
                     <VStack w="100%" spacing={8} alignItems="start">
-                        <Text fontSize="4xl" fontWeight="semibold">
+                        <Text
+                            fontSize="5xl"
+                            fontWeight="semibold"
+                            lineHeight="1.2">
                             Let&apos;s get started with some details
                         </Text>
                         <FormControl

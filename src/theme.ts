@@ -8,8 +8,8 @@ const theme = extendTheme({
         dark: {}
     },
     fonts: {
-        heading: "Montserrat",
-        body: "Montserrat"
+        heading: "Questrial",
+        body: "Questrial"
     }
 })
 

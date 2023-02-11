@@ -28,7 +28,7 @@ const List = ({
     return (
         <VStack spacing={4} w="100%" px={48} pt={main ? 16 : 0} pb={8}>
             <Text
-                fontSize="lg"
+                fontSize="xl"
                 w="100%"
                 fontWeight="semibold"
                 color={main ? "white" : "#486282"}>

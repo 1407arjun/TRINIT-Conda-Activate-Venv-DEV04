@@ -35,7 +35,7 @@ const Plot = ({
 
     return (
         <VStack spacing={4} w="100%">
-            <Text fontSize="lg" w="100%" fontWeight="semibold" color="#486282">
+            <Text fontSize="xl" w="100%" fontWeight="semibold" color="#486282">
                 Cluster vizualization
             </Text>
             <VStack

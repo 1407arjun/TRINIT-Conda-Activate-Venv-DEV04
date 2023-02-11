@@ -1,6 +1,6 @@
 import { Heading, HStack, Link, Spacer, Text } from "@chakra-ui/react"
 
-const Navbar = ({ invert }: { invert: boolean }) => {
+const Navbar = ({ invert }: { invert?: boolean }) => {
     return (
         <HStack
             w="100%"
@@ -9,12 +9,12 @@ const Navbar = ({ invert }: { invert: boolean }) => {
             color={invert ? "gray" : "white"}
             bgColor={invert ? "white" : "initial"}>
             <Link href="/" _hover={{ textDecoration: "none" }}>
-                <Heading as="h1" size="md">
+                <Heading as="h1" fontSize={24}>
                     Clusterbase
                 </Heading>
             </Link>
             <Spacer />
-            <Text fontSize="lg" fontWeight="semibold">
+            <Text fontSize="xl" fontWeight="semibold">
                 Conda Activate Venv
             </Text>
         </HStack>
