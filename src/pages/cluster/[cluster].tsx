@@ -11,13 +11,18 @@ import Rule from "../../types/Rule"
 const cluster: ClusterType = {
     id: "cluster-0",
     name: "Cluster 0",
-    rules: {
-        name: { id: "name", type: DataType.Number, match: MatchType.Full }
-    }
+    rules: [
+        {
+            id: "name",
+            type: DataType.Number,
+            match: MatchType.Full,
+            priority: 1
+        }
+    ]
 }
 
 const Cluster: NextPage = () => {
-    const [rules, setRules] = useState<{ [key: string]: Rule }>(cluster.rules)
+    const [rules, setRules] = useState<Rule[]>(cluster.rules)
     return (
         <VStack
             backgroundImage="../blue.png"

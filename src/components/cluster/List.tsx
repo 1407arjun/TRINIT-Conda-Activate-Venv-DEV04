@@ -1,6 +1,7 @@
 import {
     Button,
     Heading,
+    HStack,
     IconButton,
     Table,
     TableCaption,
@@ -16,7 +17,7 @@ import {
 } from "@chakra-ui/react"
 import type Rule from "../../types/Rule"
 import Inputs from "./Inputs"
-import { DeleteIcon } from "@chakra-ui/icons"
+import { ArrowDownIcon, ArrowUpIcon, DeleteIcon } from "@chakra-ui/icons"
 import { Dispatch, SetStateAction } from "react"
 
 const List = ({
@@ -25,8 +26,8 @@ const List = ({
     setRules
 }: {
     title: string
-    rules: { [key: string]: Rule }
-    setRules: Dispatch<SetStateAction<{ [key: string]: Rule }>>
+    rules: Rule[]
+    setRules: Dispatch<SetStateAction<Rule[]>>
 }) => {
     return (
         <VStack spacing={4} w="100%" px={24} py={4}>
@@ -48,12 +49,12 @@ const List = ({
                 <TableContainer w="100%">
                     <Table variant="simple">
                         <TableCaption>
-                            {Object.keys(rules).length} rule
-                            {Object.keys(rules).length === 1 ? "" : "s"} defined
-                            for {title}
+                            {rules.length} rule
+                            {rules.length === 1 ? "" : "s"} defined for {title}
                         </TableCaption>
                         <Thead>
                             <Tr>
+                                <Th>Priority</Th>
                                 <Th>ID</Th>
                                 <Th>Match type</Th>
                                 <Th>Data type</Th>
@@ -61,17 +62,19 @@ const List = ({
                             </Tr>
                         </Thead>
                         <Tbody>
-                            {Object.keys(rules).map((r) => (
-                                <Tr key={rules[r].id}>
-                                    <Td>{rules[r].id}</Td>
-                                    <Td>{rules[r].match}</Td>
-                                    <Td>{rules[r].type}</Td>
-                                    <Td>
+                            {rules.map((rule) => (
+                                <Tr key={rule.id}>
+                                    <Td>{rule.priority}</Td>
+                                    <Td>{rule.id}</Td>
+                                    <Td>{rule.match}</Td>
+                                    <Td>{rule.type}</Td>
+                                    <Td as={HStack}>
                                         <IconButton
                                             onClick={() => {
                                                 setRules((prev) => {
-                                                    delete prev[r]
-                                                    return { ...prev }
+                                                    return prev.filter(
+                                                        (r) => r.id !== rule.id
+                                                    )
                                                 })
                                             }}
                                             colorScheme="red"

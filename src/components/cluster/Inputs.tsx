@@ -6,7 +6,12 @@ import {
     Select,
     FormHelperText,
     FormErrorMessage,
-    IconButton
+    IconButton,
+    NumberInput,
+    NumberInputField,
+    NumberInputStepper,
+    NumberIncrementStepper,
+    NumberDecrementStepper
 } from "@chakra-ui/react"
 import { AddIcon } from "@chakra-ui/icons"
 import type Rule from "../../types/Rule"
@@ -17,12 +22,13 @@ const Inputs = ({
     rules,
     setRules
 }: {
-    rules: { [key: string]: Rule }
-    setRules: Dispatch<SetStateAction<{ [key: string]: Rule }>>
+    rules: Rule[]
+    setRules: Dispatch<SetStateAction<Rule[]>>
 }) => {
     const [idInput, setIdInput] = useState("")
     const [typeInput, setTypeInput] = useState<DataType>(DataType.String)
     const [matchInput, setMatchInput] = useState<MatchType>(MatchType.Full)
+    const [priorityInput, setPriorityInput] = useState<0 | 1 | 2 | 3 | 4 | 5>(0)
 
     const handleIdInputChange = (e: FormEvent<HTMLInputElement>) => {
         setIsIdError(false)
@@ -32,11 +38,14 @@ const Inputs = ({
         setTypeInput((e.target as HTMLSelectElement).value as DataType)
     const handleMatchInputChange = (e: FormEvent<HTMLSelectElement>) =>
         setMatchInput((e.target as HTMLSelectElement).value as MatchType)
+    const handlePriorityInputChange = (str: string, num: number) =>
+        setPriorityInput(num as 0 | 1 | 2 | 3 | 4 | 5)
 
     const [isIdError, setIsIdError] = useState(false)
     const [errorMessage, setErrorMessage] = useState("")
     const isTypeError = false
     const isMatchError = false
+    const isPriorityError = false
 
     return (
         <HStack alignItems="start" w="100%">
@@ -53,29 +62,14 @@ const Inputs = ({
                     <FormErrorMessage pl={2}>{errorMessage}</FormErrorMessage>
                 )}
             </FormControl>
-            <FormControl isInvalid={isMatchError}>
-                <Select
-                    onChange={handleTypeInputChange}
-                    defaultValue={MatchType.Full}>
-                    <option value={MatchType.Full}>Full</option>
-                    <option value={MatchType.Partial}>Partial</option>
-                </Select>
-                {!isIdError ? (
-                    <FormHelperText pl={2}>Attribute match type</FormHelperText>
-                ) : (
-                    <FormErrorMessage pl={2}>
-                        Match type is required
-                    </FormErrorMessage>
-                )}
-            </FormControl>
             <FormControl isInvalid={isTypeError}>
                 <Select
-                    onChange={handleMatchInputChange}
+                    onChange={handleTypeInputChange}
                     defaultValue={DataType.String}>
                     <option value={DataType.String}>String</option>
                     <option value={DataType.Number}>Number</option>
                 </Select>
-                {!isIdError ? (
+                {!isTypeError ? (
                     <FormHelperText pl={2}>Attribute data type</FormHelperText>
                 ) : (
                     <FormErrorMessage pl={2}>
@@ -83,25 +77,56 @@ const Inputs = ({
                     </FormErrorMessage>
                 )}
             </FormControl>
+            <FormControl isInvalid={isMatchError}>
+                <Select
+                    onChange={handleMatchInputChange}
+                    defaultValue={MatchType.Full}>
+                    <option value={MatchType.Full}>Full</option>
+                    <option value={MatchType.Partial}>Partial</option>
+                </Select>
+                {!isMatchError ? (
+                    <FormHelperText pl={2}>Attribute match type</FormHelperText>
+                ) : (
+                    <FormErrorMessage pl={2}>
+                        Match type is required
+                    </FormErrorMessage>
+                )}
+            </FormControl>
+            <FormControl isInvalid={isPriorityError}>
+                <NumberInput
+                    max={5}
+                    min={0}
+                    value={priorityInput}
+                    onChange={handlePriorityInputChange}>
+                    <NumberInputField />
+                    <NumberInputStepper>
+                        <NumberIncrementStepper />
+                        <NumberDecrementStepper />
+                    </NumberInputStepper>
+                </NumberInput>
+            </FormControl>
             <IconButton
                 onClick={() => {
                     if (idInput.trim() === "") {
                         setErrorMessage("ID is required")
                         setIsIdError(true)
                     } else {
-                        if (Object.keys(rules).includes(idInput)) {
+                        if (!rules.every((r) => r.id !== idInput)) {
                             setErrorMessage("ID already exists")
                             setIsIdError(true)
                         } else {
                             setRules((prev) => {
-                                return {
+                                const arr = [
                                     ...prev,
-                                    [idInput]: {
+                                    {
                                         id: idInput,
                                         type: typeInput,
-                                        match: matchInput
+                                        match: matchInput,
+                                        priority: priorityInput ?? 0
                                     }
-                                }
+                                ]
+                                arr.sort((r, s) => s.priority - r.priority)
+                                return arr
                             })
                         }
                     }
