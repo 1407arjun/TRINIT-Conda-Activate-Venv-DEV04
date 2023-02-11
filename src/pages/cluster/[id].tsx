@@ -49,6 +49,7 @@ const Cluster: NextPage<{ cluster: ClusterType }> = ({ cluster }) => {
                     </Heading>
                 </HStack>
                 <RuleList
+                    id={cluster.id}
                     title={cluster.name}
                     rules={rules}
                     setRules={setRules}

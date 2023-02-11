@@ -20,10 +20,12 @@ import MatchType from "../../types/MatchType"
 
 const Inputs = ({
     rules,
-    setRules
+    setRules,
+    disabled
 }: {
     rules: Rule[]
     setRules: Dispatch<SetStateAction<Rule[]>>
+    disabled: boolean
 }) => {
     const [idInput, setIdInput] = useState("")
     const [typeInput, setTypeInput] = useState<DataType>(DataType.String)
@@ -49,7 +51,7 @@ const Inputs = ({
 
     return (
         <HStack alignItems="start" w="100%">
-            <FormControl isInvalid={isIdError}>
+            <FormControl isInvalid={isIdError} isDisabled={disabled}>
                 <Input
                     type="text"
                     value={idInput}
@@ -62,7 +64,7 @@ const Inputs = ({
                     <FormErrorMessage pl={2}>{errorMessage}</FormErrorMessage>
                 )}
             </FormControl>
-            <FormControl isInvalid={isTypeError}>
+            <FormControl isInvalid={isTypeError} isDisabled={disabled}>
                 <Select
                     onChange={handleTypeInputChange}
                     defaultValue={DataType.String}>
@@ -77,7 +79,7 @@ const Inputs = ({
                     </FormErrorMessage>
                 )}
             </FormControl>
-            <FormControl isInvalid={isMatchError}>
+            <FormControl isInvalid={isMatchError} isDisabled={disabled}>
                 <Select
                     onChange={handleMatchInputChange}
                     defaultValue={MatchType.Full}>
@@ -92,7 +94,7 @@ const Inputs = ({
                     </FormErrorMessage>
                 )}
             </FormControl>
-            <FormControl isInvalid={isPriorityError}>
+            <FormControl isInvalid={isPriorityError} isDisabled={disabled}>
                 <NumberInput
                     max={5}
                     min={0}
@@ -115,6 +117,7 @@ const Inputs = ({
                 )}
             </FormControl>
             <IconButton
+                isDisabled={disabled}
                 onClick={() => {
                     if (idInput.trim() === "") {
                         setErrorMessage("ID is required")

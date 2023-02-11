@@ -1,6 +1,5 @@
 import {
     Button,
-    Heading,
     HStack,
     IconButton,
     Table,
@@ -9,26 +8,32 @@ import {
     Tbody,
     Td,
     Text,
-    Tfoot,
     Th,
     Thead,
     Tr,
+    useToast,
     VStack
 } from "@chakra-ui/react"
 import type Rule from "../../types/Rule"
 import Inputs from "./Inputs"
 import { DeleteIcon } from "@chakra-ui/icons"
-import { Dispatch, SetStateAction } from "react"
+import { Dispatch, SetStateAction, useState } from "react"
+import axios from "axios"
 
 const List = ({
+    id,
     title,
     rules,
     setRules
 }: {
+    id: string
     title: string
     rules: Rule[]
     setRules: Dispatch<SetStateAction<Rule[]>>
 }) => {
+    const [loading, setLoading] = useState(false)
+    const toast = useToast()
+
     return (
         <VStack spacing={4} w="100%">
             <Text fontSize="lg" w="100%" fontWeight="semibold" color="white">
@@ -42,7 +47,7 @@ const List = ({
                 rounded="lg"
                 px={4}
                 py={5}>
-                <Inputs rules={rules} setRules={setRules} />
+                <Inputs rules={rules} setRules={setRules} disabled={loading} />
                 <TableContainer w="100%">
                     <Table variant="simple">
                         <TableCaption>
@@ -85,7 +90,49 @@ const List = ({
                         </Tbody>
                     </Table>
                 </TableContainer>
-                <Button colorScheme="messenger">Save Rules</Button>
+                <Button
+                    colorScheme="messenger"
+                    isLoading={loading}
+                    onClick={async () => {
+                        setLoading(true)
+                        try {
+                            const { data }: { data: { error: boolean } } =
+                                await axios.post("/api/update/rules", {
+                                    id,
+                                    rules
+                                })
+                            if (!data.error) {
+                                toast({
+                                    title: "Success",
+                                    description: "Rules updated successfully",
+                                    status: "success",
+                                    duration: 5000,
+                                    isClosable: true
+                                })
+                            } else {
+                                toast({
+                                    title: "Please try again",
+                                    description: "An error occured",
+                                    status: "error",
+                                    duration: 5000,
+                                    isClosable: true
+                                })
+                            }
+                        } catch (e) {
+                            console.log(e)
+                            toast({
+                                title: "Please try again",
+                                description: "An error occured",
+                                status: "error",
+                                duration: 5000,
+                                isClosable: true
+                            })
+                        } finally {
+                            setLoading(false)
+                        }
+                    }}>
+                    Save Rules
+                </Button>
             </VStack>
         </VStack>
     )
