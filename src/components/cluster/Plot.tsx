@@ -32,7 +32,9 @@ const Plot = ({
                     data={[
                         {
                             x: Object.values(data["SALES"] || {}),
-                            y: Object.values(data["PRODUCTCODE"] || {}),
+                            y: Object.values(data["QUANTITYORDERED"] || {}),
+                            xaxis: "SALES",
+                            yaxis: "QUANTITYORDERED",
                             type: "scatter",
                             mode: "markers",
                             marker: {
@@ -40,11 +42,14 @@ const Plot = ({
                                 sizemax: 30
                             },
                             opacity: 0.8,
-                            hovertext: "STATUS"
+                            //@ts-ignore
+                            hovertext: Object.values(data["STATUS"] || {})
                         }
                     ]}
                     layout={{
-                        title
+                        title,
+                        xaxis: { title: "SALES" },
+                        yaxis: { title: "QUANTITYORDERED" }
                     }}
                 />
                 )

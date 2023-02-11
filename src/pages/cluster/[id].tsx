@@ -37,8 +37,7 @@ const Cluster: NextPage<{
     const process = async (rules: Rule[]) => {
         try {
             const { data } = await axios.post("/api/process", {
-                selection: ["SALES", "PRODUCTCODE", "STATUS"],
-                schema: rules
+                rules
             })
             setData(data)
         } catch (e) {
