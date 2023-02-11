@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { Dispatch, FormEvent, SetStateAction, useState } from "react"
 import {
     HStack,
     FormControl,
@@ -9,20 +9,32 @@ import {
     IconButton
 } from "@chakra-ui/react"
 import { AddIcon } from "@chakra-ui/icons"
+import type Rule from "../../types/Rule"
+import DataType from "../../types/DataType"
+import MatchType from "../../types/MatchType"
 
-const Inputs = () => {
+const Inputs = ({
+    rules,
+    setRules
+}: {
+    rules: { [key: string]: Rule }
+    setRules: Dispatch<SetStateAction<{ [key: string]: Rule }>>
+}) => {
     const [idInput, setIdInput] = useState("")
-    const [typeInput, setTypeInput] = useState("")
-    const [matchInput, setMatchInput] = useState("")
+    const [typeInput, setTypeInput] = useState<DataType>(DataType.String)
+    const [matchInput, setMatchInput] = useState<MatchType>(MatchType.Full)
 
-    const handleIdInputChange = (e) => {
+    const handleIdInputChange = (e: FormEvent<HTMLInputElement>) => {
         setIsIdError(false)
-        setIdInput(e.target.value)
+        setIdInput((e.target as HTMLInputElement).value)
     }
-    const handleTypeInputChange = (e) => setTypeInput(e.target.value)
-    const handleMatchInputChange = (e) => setMatchInput(e.target.value)
+    const handleTypeInputChange = (e: FormEvent<HTMLSelectElement>) =>
+        setTypeInput((e.target as HTMLSelectElement).value as DataType)
+    const handleMatchInputChange = (e: FormEvent<HTMLSelectElement>) =>
+        setMatchInput((e.target as HTMLSelectElement).value as MatchType)
 
     const [isIdError, setIsIdError] = useState(false)
+    const [errorMessage, setErrorMessage] = useState("")
     const isTypeError = false
     const isMatchError = false
 
@@ -38,15 +50,15 @@ const Inputs = () => {
                 {!isIdError ? (
                     <FormHelperText pl={2}>Attribute identifier</FormHelperText>
                 ) : (
-                    <FormErrorMessage pl={2}>ID is required</FormErrorMessage>
+                    <FormErrorMessage pl={2}>{errorMessage}</FormErrorMessage>
                 )}
             </FormControl>
             <FormControl isInvalid={isMatchError}>
-                <Select onChange={handleMatchInputChange}>
-                    <option value="full" selected>
-                        Full
-                    </option>
-                    <option value="partial">Partial</option>
+                <Select
+                    onChange={handleTypeInputChange}
+                    defaultValue={MatchType.Full}>
+                    <option value={MatchType.Full}>Full</option>
+                    <option value={MatchType.Partial}>Partial</option>
                 </Select>
                 {!isIdError ? (
                     <FormHelperText pl={2}>Attribute match type</FormHelperText>
@@ -57,11 +69,11 @@ const Inputs = () => {
                 )}
             </FormControl>
             <FormControl isInvalid={isTypeError}>
-                <Select onChange={handleMatchInputChange}>
-                    <option value="string" selected>
-                        String
-                    </option>
-                    <option value="number">Number</option>
+                <Select
+                    onChange={handleMatchInputChange}
+                    defaultValue={DataType.String}>
+                    <option value={DataType.String}>String</option>
+                    <option value={DataType.Number}>Number</option>
                 </Select>
                 {!isIdError ? (
                     <FormHelperText pl={2}>Attribute data type</FormHelperText>
@@ -73,8 +85,25 @@ const Inputs = () => {
             </FormControl>
             <IconButton
                 onClick={() => {
-                    if (idInput.trim() === "") setIsIdError(true)
-                    else {
+                    if (idInput.trim() === "") {
+                        setErrorMessage("ID is required")
+                        setIsIdError(true)
+                    } else {
+                        if (Object.keys(rules).includes(idInput)) {
+                            setErrorMessage("ID already exists")
+                            setIsIdError(true)
+                        } else {
+                            setRules((prev) => {
+                                return {
+                                    ...prev,
+                                    [idInput]: {
+                                        id: idInput,
+                                        type: typeInput,
+                                        match: matchInput
+                                    }
+                                }
+                            })
+                        }
                     }
                 }}
                 colorScheme="green"

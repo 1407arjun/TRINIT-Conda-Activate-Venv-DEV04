@@ -14,12 +14,20 @@ import {
     Tr,
     VStack
 } from "@chakra-ui/react"
-import Item from "./Item"
 import type Rule from "../../types/Rule"
 import Inputs from "./Inputs"
 import { DeleteIcon } from "@chakra-ui/icons"
+import { Dispatch, SetStateAction } from "react"
 
-const List = ({ title, rules }: { title: string; rules: Rule[] }) => {
+const List = ({
+    title,
+    rules,
+    setRules
+}: {
+    title: string
+    rules: { [key: string]: Rule }
+    setRules: Dispatch<SetStateAction<{ [key: string]: Rule }>>
+}) => {
     return (
         <VStack spacing={4} w="100%" px={24} py={4}>
             <Heading as="h1" size="xl" w="100%" color="white" pb={6}>
@@ -36,7 +44,7 @@ const List = ({ title, rules }: { title: string; rules: Rule[] }) => {
                 rounded="lg"
                 px={4}
                 py={5}>
-                <Inputs />
+                <Inputs rules={rules} setRules={setRules} />
                 <TableContainer w="100%">
                     <Table variant="simple">
                         <TableCaption>Rules defined for {title}</TableCaption>
@@ -49,11 +57,11 @@ const List = ({ title, rules }: { title: string; rules: Rule[] }) => {
                             </Tr>
                         </Thead>
                         <Tbody>
-                            {rules.map((r) => (
-                                <Tr key={r.id}>
-                                    <Td>{r.id}</Td>
-                                    <Td>{r.match}</Td>
-                                    <Td>{r.type}</Td>
+                            {Object.keys(rules).map((r) => (
+                                <Tr key={rules[r].id}>
+                                    <Td>{rules[r].id}</Td>
+                                    <Td>{rules[r].match}</Td>
+                                    <Td>{rules[r].type}</Td>
                                     <Td>
                                         <IconButton
                                             colorScheme="red"
