@@ -2,6 +2,7 @@ import {
     Button,
     HStack,
     IconButton,
+    Spacer,
     Table,
     TableCaption,
     TableContainer,
@@ -14,6 +15,15 @@ import {
     useToast,
     VStack
 } from "@chakra-ui/react"
+import {
+    FormControl,
+    FormHelperText,
+    NumberDecrementStepper,
+    NumberIncrementStepper,
+    NumberInput,
+    NumberInputField,
+    NumberInputStepper
+} from "@chakra-ui/react"
 import type Rule from "../../types/Rule"
 import Inputs from "./Inputs"
 import { DeleteIcon } from "@chakra-ui/icons"
@@ -24,15 +34,21 @@ const List = ({
     id,
     title,
     rules,
-    setRules
+    setRules,
+    count,
+    setCount
 }: {
     id: string
     title: string
     rules: Rule[]
     setRules: Dispatch<SetStateAction<Rule[]>>
+    count: number
+    setCount: Dispatch<SetStateAction<number>>
 }) => {
     const [loading, setLoading] = useState(false)
     const toast = useToast()
+
+    const handleCountChange = (str: string, num: number) => setCount(num)
 
     return (
         <VStack spacing={4} w="100%">
@@ -46,7 +62,8 @@ const List = ({
                 shadow="md"
                 rounded="lg"
                 px={4}
-                py={5}>
+                py={5}
+                align="start">
                 <Inputs rules={rules} setRules={setRules} disabled={loading} />
                 <TableContainer w="100%">
                     <Table variant="simple">
@@ -90,26 +107,55 @@ const List = ({
                         </Tbody>
                     </Table>
                 </TableContainer>
-                <Button
-                    colorScheme="messenger"
-                    isLoading={loading}
-                    onClick={async () => {
-                        setLoading(true)
-                        try {
-                            const { data }: { data: { error: boolean } } =
-                                await axios.post("/api/update/rules", {
-                                    id,
-                                    rules
-                                })
-                            if (!data.error) {
-                                toast({
-                                    title: "Success",
-                                    description: "Rules updated successfully",
-                                    status: "success",
-                                    duration: 5000,
-                                    isClosable: true
-                                })
-                            } else {
+                <HStack w="100%" spacing={6}>
+                    <FormControl w={64}>
+                        <NumberInput
+                            max={5}
+                            min={2}
+                            value={count}
+                            onChange={handleCountChange}>
+                            <NumberInputField />
+                            <NumberInputStepper>
+                                <NumberIncrementStepper />
+                                <NumberDecrementStepper />
+                            </NumberInputStepper>
+                        </NumberInput>
+                        <FormHelperText pl={2}>No. of clusters</FormHelperText>
+                    </FormControl>
+                    <Spacer />
+                    <Button
+                        w={64}
+                        alignSelf="self-start"
+                        colorScheme="messenger"
+                        isLoading={loading}
+                        onClick={async () => {
+                            setLoading(true)
+                            try {
+                                const { data }: { data: { error: boolean } } =
+                                    await axios.post("/api/update/rules", {
+                                        id,
+                                        rules
+                                    })
+                                if (!data.error) {
+                                    toast({
+                                        title: "Success",
+                                        description:
+                                            "Rules updated successfully",
+                                        status: "success",
+                                        duration: 5000,
+                                        isClosable: true
+                                    })
+                                } else {
+                                    toast({
+                                        title: "Please try again",
+                                        description: "An error occured",
+                                        status: "error",
+                                        duration: 5000,
+                                        isClosable: true
+                                    })
+                                }
+                            } catch (e) {
+                                console.log(e)
                                 toast({
                                     title: "Please try again",
                                     description: "An error occured",
@@ -117,22 +163,13 @@ const List = ({
                                     duration: 5000,
                                     isClosable: true
                                 })
+                            } finally {
+                                setLoading(false)
                             }
-                        } catch (e) {
-                            console.log(e)
-                            toast({
-                                title: "Please try again",
-                                description: "An error occured",
-                                status: "error",
-                                duration: 5000,
-                                isClosable: true
-                            })
-                        } finally {
-                            setLoading(false)
-                        }
-                    }}>
-                    Save Rules
-                </Button>
+                        }}>
+                        Save Rules
+                    </Button>
+                </HStack>
             </VStack>
         </VStack>
     )

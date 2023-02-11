@@ -26,6 +26,7 @@ const Cluster: NextPage<{
     cluster: ClusterType
 }> = ({ cluster }) => {
     const [rules, setRules] = useState<Rule[]>(cluster.rules)
+    const [count, setCount] = useState(2)
     const [loading, setLoading] = useState(false)
     const toast = useToast()
     const router = useRouter()
@@ -34,10 +35,11 @@ const Cluster: NextPage<{
         [key: string]: { [key: string]: string | number }
     }>({})
 
-    const process = async (rules: Rule[]) => {
+    const process = async (rules: Rule[], count: number) => {
         try {
             const { data } = await axios.post("/api/process", {
-                rules
+                rules,
+                count
             })
             setData(data)
         } catch (e) {
@@ -46,8 +48,8 @@ const Cluster: NextPage<{
     }
 
     useEffect(() => {
-        process(rules)
-    }, [rules])
+        process(rules, count)
+    }, [rules, count])
 
     return (
         <VStack
@@ -146,8 +148,10 @@ const Cluster: NextPage<{
                     title={cluster.name}
                     rules={rules}
                     setRules={setRules}
+                    count={count}
+                    setCount={setCount}
                 />
-                <Plot title={cluster.name} data={data} />
+                <Plot title={cluster.name} data={data} rules={rules} />
             </VStack>
         </VStack>
     )

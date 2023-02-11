@@ -1,5 +1,8 @@
 import { Text, VStack } from "@chakra-ui/react"
 import dynamic from "next/dynamic"
+import { Dispatch, SetStateAction, useState } from "react"
+import type Rule from "../../types/Rule"
+import Selection from "./Selection"
 
 const Plotly = dynamic(() => import("react-plotly.js"), {
     ssr: false
@@ -7,13 +10,18 @@ const Plotly = dynamic(() => import("react-plotly.js"), {
 
 const Plot = ({
     title,
-    data
+    data,
+    rules
 }: {
     title: string
     data: {
         [key: string]: { [key: string]: string | number }
     }
+    rules: Rule[]
 }) => {
+    const [x, setX] = useState("")
+    const [y, setY] = useState("")
+
     return (
         <VStack spacing={4} w="100%">
             <Text fontSize="lg" w="100%" fontWeight="semibold" color="#486282">
@@ -27,14 +35,15 @@ const Plot = ({
                 rounded="lg"
                 px={4}
                 py={5}>
+                <Selection rules={rules} x={x} setX={setX} y={y} setY={setY} />
                 <Plotly
                     style={{ width: "100%" }}
                     data={[
                         {
-                            x: Object.values(data["SALES"] || {}),
-                            y: Object.values(data["QUANTITYORDERED"] || {}),
-                            xaxis: "SALES",
-                            yaxis: "QUANTITYORDERED",
+                            x: Object.values(data[x] || {}),
+                            y: Object.values(data[y] || {}),
+                            xaxis: x,
+                            yaxis: y,
                             type: "scatter",
                             mode: "markers",
                             marker: {
@@ -48,8 +57,8 @@ const Plot = ({
                     ]}
                     layout={{
                         title,
-                        xaxis: { title: "SALES" },
-                        yaxis: { title: "QUANTITYORDERED" }
+                        xaxis: { title: x },
+                        yaxis: { title: y }
                     }}
                 />
                 )
