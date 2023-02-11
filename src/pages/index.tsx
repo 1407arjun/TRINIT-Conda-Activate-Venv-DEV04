@@ -9,7 +9,7 @@ const Home: NextPage = () => {
         <VStack minH="100vh" bgColor="#1c73e8">
             <Head title="Clusterbase" desc="This is Clusterbase" />
             <Navbar invert />
-            <Center minH="75vh" color="white" as={VStack}>
+            <Center minH="90vh" color="white" as={VStack}>
                 <Heading as="h1" size="2xl" pb={2}>
                     This is Clusterbase
                 </Heading>
