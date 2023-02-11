@@ -4,4 +4,3 @@ requests
 flask
 scikit-learn
 plotly
-json
