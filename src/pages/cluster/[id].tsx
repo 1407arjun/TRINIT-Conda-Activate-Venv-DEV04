@@ -24,27 +24,31 @@ import { useRouter } from "next/router"
 
 const Cluster: NextPage<{
     cluster: ClusterType
-    data: {
-        [key: string]: { [key: string]: string | number }
-    }
-}> = ({ cluster, data }) => {
+}> = ({ cluster }) => {
     const [rules, setRules] = useState<Rule[]>(cluster.rules)
     const [loading, setLoading] = useState(false)
     const toast = useToast()
     const router = useRouter()
 
-    // const [data, setData] = useState<{
-    //     [key: string]: { [key: string]: string | number }
-    // }>({})
+    const [data, setData] = useState<{
+        [key: string]: { [key: string]: string | number }
+    }>({})
 
-    // const process = async () => {
-    //     console.log(data)
-    //     setData(JSON.parse(data))
-    // }
+    const process = async (rules: Rule[]) => {
+        try {
+            const { data } = await axios.post("/api/process", {
+                selection: ["SALES", "PRODUCTCODE", "STATUS"],
+                schema: rules
+            })
+            setData(data)
+        } catch (e) {
+            console.log(e)
+        }
+    }
 
-    // useEffect(() => {
-    //     process()
-    // }, [rules])
+    useEffect(() => {
+        process(rules)
+    }, [rules])
 
     return (
         <VStack
@@ -170,83 +174,11 @@ export const getServerSideProps = async (
         )
         await client.close()
 
-        if (cluster) {
-            const { data } = await axios.post("http://127.0.0.1:5000", {
-                selection: [
-                    "QUANTITYORDERED",
-                    "PRICEEACH",
-                    "SALES",
-                    "PRODUCTLINE",
-                    "MSRP",
-                    "PRODUCTCODE",
-                    "CITY",
-                    "STATE",
-                    "CONTACTLASTNAME",
-                    "CONTACTFIRSTNAME",
-                    "STATUS"
-                ],
-                schema: [
-                    {
-                        id: "QUANTITYORDERED",
-                        type: "string",
-                        match: "partial"
-                    },
-                    {
-                        id: "PRICEEACH",
-                        type: "string",
-                        match: "partial"
-                    },
-                    {
-                        id: "SALES",
-                        type: "string",
-                        match: "partial"
-                    },
-                    {
-                        id: "PRODUCTLINE",
-                        type: "string",
-                        match: "partial"
-                    },
-                    {
-                        id: "MSRP",
-                        type: "string",
-                        match: "partial"
-                    },
-                    {
-                        id: "PRODUCTCODE",
-                        type: "string",
-                        match: "full"
-                    },
-                    {
-                        id: "CITY",
-                        type: "string",
-                        match: "partial"
-                    },
-                    {
-                        id: "STATE",
-                        type: "string",
-                        match: "partial"
-                    },
-                    {
-                        id: "CONTACTLASTNAME",
-                        type: "string",
-                        match: "partial"
-                    },
-                    {
-                        id: "CONTACTFIRSTNAME",
-                        type: "string",
-                        match: "partial"
-                    },
-                    {
-                        id: "STATUS",
-                        type: "string",
-                        match: "full"
-                    }
-                ]
-            })
+        if (cluster)
             return {
-                props: { cluster, data }
+                props: { cluster }
             }
-        } else
+        else
             return {
                 notFound: true
             }

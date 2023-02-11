@@ -31,7 +31,7 @@ const Plot = ({
                     style={{ width: "100%" }}
                     data={[
                         {
-                            x: Object.values(data["MSRP"] || {}),
+                            x: Object.values(data["SALES"] || {}),
                             y: Object.values(data["PRODUCTCODE"] || {}),
                             type: "scatter",
                             mode: "markers",
