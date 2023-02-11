@@ -10,7 +10,7 @@ const Home: NextPage = () => {
             <Head title="Clusterbase" desc="This is Clusterbase" />
             <Navbar invert />
             <Center minH="90vh" color="white" as={VStack}>
-                <Heading as="h1" size="4xl" pb={2}>
+                <Heading as="h1" size="4xl" pb={2} fontWeight="bold">
                     This is Clusterbase
                 </Heading>
                 <Text fontSize="2xl" fontWeight="medium" pb={8}>
