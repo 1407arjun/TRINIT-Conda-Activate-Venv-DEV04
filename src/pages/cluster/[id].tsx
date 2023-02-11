@@ -10,7 +10,7 @@ import {
     useToast
 } from "@chakra-ui/react"
 import { GetServerSidePropsContext, NextPage } from "next"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import RuleList from "../../components/cluster/List"
 import Navbar from "../../components/Navbar"
 import Head from "../../components/Head"
@@ -22,11 +22,29 @@ import Plot from "../../components/cluster/Plot"
 import axios from "axios"
 import { useRouter } from "next/router"
 
-const Cluster: NextPage<{ cluster: ClusterType }> = ({ cluster }) => {
+const Cluster: NextPage<{
+    cluster: ClusterType
+    data: {
+        [key: string]: { [key: string]: string | number }
+    }
+}> = ({ cluster, data }) => {
     const [rules, setRules] = useState<Rule[]>(cluster.rules)
     const [loading, setLoading] = useState(false)
     const toast = useToast()
     const router = useRouter()
+
+    // const [data, setData] = useState<{
+    //     [key: string]: { [key: string]: string | number }
+    // }>({})
+
+    // const process = async () => {
+    //     console.log(data)
+    //     setData(JSON.parse(data))
+    // }
+
+    // useEffect(() => {
+    //     process()
+    // }, [rules])
 
     return (
         <VStack
@@ -126,7 +144,7 @@ const Cluster: NextPage<{ cluster: ClusterType }> = ({ cluster }) => {
                     rules={rules}
                     setRules={setRules}
                 />
-                <Plot title={cluster.name} />
+                <Plot title={cluster.name} data={data} />
             </VStack>
         </VStack>
     )
@@ -152,11 +170,12 @@ export const getServerSideProps = async (
         )
         await client.close()
 
-        if (cluster)
+        if (cluster) {
+            const { data } = await axios.post("http://127.0.0.1:5000", {})
             return {
-                props: { cluster }
+                props: { cluster, data }
             }
-        else
+        } else
             return {
                 notFound: true
             }
