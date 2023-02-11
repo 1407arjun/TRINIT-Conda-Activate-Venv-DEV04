@@ -21,7 +21,9 @@ const Console: NextPage<{ clusters: Cluster[] }> = ({ clusters }) => {
             />
             <Navbar />
             <ClusterList main title="Recent clusters" clusters={clusters} />
-            <ClusterList title="All clusters" clusters={clusters} />
+            {clusters.length > 0 && (
+                <ClusterList title="All clusters" clusters={clusters} />
+            )}
         </VStack>
     )
 }
