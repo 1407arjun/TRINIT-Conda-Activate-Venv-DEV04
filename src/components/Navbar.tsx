@@ -1,8 +1,13 @@
 import { Heading, HStack, Spacer, Text } from "@chakra-ui/react"
 
-const Navbar = () => {
+const Navbar = ({ invert }: { invert: boolean }) => {
     return (
-        <HStack w="100%" px={6} py={4} color="white">
+        <HStack
+            w="100%"
+            px={6}
+            py={4}
+            color={invert ? "gray" : "white"}
+            bgColor={invert ? "white" : "initial"}>
             <Heading as="h1" size="md">
                 Clusterbase
             </Heading>
