@@ -1,7 +1,17 @@
-import { Grid, Text, VStack, GridItem, Spacer, Divider } from "@chakra-ui/react"
+import {
+    Grid,
+    Text,
+    VStack,
+    GridItem,
+    Spacer,
+    Divider,
+    useDisclosure
+} from "@chakra-ui/react"
 import Item from "./Item"
 import { AddIcon } from "@chakra-ui/icons"
 import type Cluster from "../../types/Cluster"
+import Create from "./Create"
+import { useRef } from "react"
 
 const List = ({
     title,
@@ -12,6 +22,9 @@ const List = ({
     main?: boolean
     clusters: Cluster[]
 }) => {
+    const { isOpen, onOpen, onClose } = useDisclosure()
+    const cancelRef = useRef()
+
     return (
         <VStack spacing={4} w="100%" px={48} pt={main ? 16 : 0} pb={8}>
             <Text
@@ -21,9 +34,17 @@ const List = ({
                 color={main ? "white" : "#486282"}>
                 {title}
             </Text>
+            <Create
+                isOpen={isOpen}
+                onClose={onClose}
+                //@ts-ignore
+                leastDestructiveRef={cancelRef}
+            />
             <Grid w="100%" gap={6} templateColumns="repeat(3, 1fr)">
                 {main && (
                     <GridItem
+                        onClick={onOpen}
+                        cursor="pointer"
                         bgColor="white"
                         shadow="md"
                         as={VStack}

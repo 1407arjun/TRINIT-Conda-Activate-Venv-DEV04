@@ -53,6 +53,7 @@ const Inputs = ({
         <HStack alignItems="start" w="100%">
             <FormControl isInvalid={isIdError} isDisabled={disabled}>
                 <Input
+                    required
                     type="text"
                     value={idInput}
                     onChange={handleIdInputChange}
