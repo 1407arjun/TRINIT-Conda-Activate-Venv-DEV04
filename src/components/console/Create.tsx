@@ -36,7 +36,7 @@ const Create = ({ isOpen, onClose }: ModalProps) => {
                 name
                     .trim()
                     .toLowerCase()
-                    .replaceAll(/[^\w\s]/gi, "")
+                    .replaceAll(/[^\w-\s]/gi, "")
                     .split(" ")
                     .join("-") +
                     "-" +
