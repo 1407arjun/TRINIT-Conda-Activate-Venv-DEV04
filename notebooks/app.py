@@ -20,6 +20,10 @@ app = Flask(__name__)
 
 
 @app.route('/')
+def home():
+    return "Hello world"
+
+@app.route('/',method=['POST'])
 def index():
     """data=requests.json"""
 
@@ -129,10 +133,10 @@ def index():
     # data_with_clusters = pd.DataFrame(subset).copy()
     # data_with_clusters['Cluster'] = identified_clusters
     
-    print(data_with_clusters)
+    # print(data_with_clusters)
 
     return data_with_clusters.to_dict()
 
 
-if __name__ == '__main__':
-    app.run()
+# if __name__ == '__main__':
+#     app.run()
