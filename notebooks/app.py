@@ -83,9 +83,9 @@ def index():
     data_with_clusters = pd.DataFrame(data).copy()
     data_with_clusters['Cluster'] = identified_clusters
 
-    fig = px.scatter(data_with_clusters, x = "SALES", y="PRODUCTCODE",
-              color='Cluster', opacity = 0.8,size_max=30,template="plotly_dark",hover_name="STATUS")
-    fig.show()
+    # fig = px.scatter(data_with_clusters, x = "SALES", y="PRODUCTCODE",
+    #           color='Cluster', opacity = 0.8,size_max=30,template="plotly_dark",hover_name="STATUS")
+    # fig.show()
 
 
     # categorical = []
@@ -128,8 +128,10 @@ def index():
 
     # data_with_clusters = pd.DataFrame(subset).copy()
     # data_with_clusters['Cluster'] = identified_clusters
+    
+    print(data_with_clusters)
 
-    return "hello"
+    return data_with_clusters.to_dict()
 
 
 if __name__ == '__main__':
