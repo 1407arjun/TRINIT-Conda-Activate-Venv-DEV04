@@ -53,7 +53,7 @@ const Cluster: NextPage<{ cluster: ClusterType }> = ({ cluster }) => {
                     rules={rules}
                     setRules={setRules}
                 />
-                <Plot />
+                <Plot title={cluster.name} />
             </VStack>
         </VStack>
     )
