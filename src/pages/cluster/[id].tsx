@@ -1,11 +1,13 @@
-import { ArrowBackIcon } from "@chakra-ui/icons"
+import { ArrowBackIcon, DeleteIcon } from "@chakra-ui/icons"
 import {
     VStack,
     Heading,
     Text,
     HStack,
     IconButton,
-    Link
+    Link,
+    Spacer,
+    useToast
 } from "@chakra-ui/react"
 import { GetServerSidePropsContext, NextPage } from "next"
 import { useState } from "react"
@@ -17,9 +19,15 @@ import Rule from "../../types/Rule"
 
 import { MongoClient, ServerApiVersion } from "mongodb"
 import Plot from "../../components/cluster/Plot"
+import axios from "axios"
+import { useRouter } from "next/router"
 
 const Cluster: NextPage<{ cluster: ClusterType }> = ({ cluster }) => {
     const [rules, setRules] = useState<Rule[]>(cluster.rules)
+    const [loading, setLoading] = useState(false)
+    const toast = useToast()
+    const router = useRouter()
+
     return (
         <VStack
             backgroundImage="../blue.png"
@@ -33,21 +41,85 @@ const Cluster: NextPage<{ cluster: ClusterType }> = ({ cluster }) => {
             />
             <Navbar />
             <VStack spacing={10} w="100%" px={24} py={4}>
-                <HStack w="100%">
-                    <IconButton
-                        as={Link}
-                        href="/console"
-                        bgColor="transparent"
-                        fontSize="4xl"
-                        rounded="full"
-                        colorScheme="whiteAlpha"
-                        aria-label="Go back"
-                        icon={<ArrowBackIcon />}
-                    />
-                    <Heading as="h1" size="xl" w="100%" color="white">
-                        {cluster.name}
-                    </Heading>
-                </HStack>
+                <VStack w="100%" color="white" alignItems="start">
+                    <HStack w="100%">
+                        <IconButton
+                            as={Link}
+                            href="/console"
+                            bgColor="transparent"
+                            fontSize="4xl"
+                            rounded="full"
+                            colorScheme="whiteAlpha"
+                            aria-label="Go back"
+                            icon={<ArrowBackIcon />}
+                        />
+                        <Heading as="h1" size="xl" w="100%" color="white">
+                            {cluster.name}
+                        </Heading>
+                        <Spacer />
+                        <IconButton
+                            isLoading={loading}
+                            onClick={async () => {
+                                if (
+                                    confirm(
+                                        `Are you sure you want to delete the Cluster ${cluster.name}?`
+                                    )
+                                ) {
+                                    setLoading(true)
+                                    try {
+                                        const {
+                                            data
+                                        }: { data: { error: boolean } } =
+                                            await axios.post(
+                                                "/api/delete/cluster",
+                                                { id: cluster.id }
+                                            )
+                                        if (!data.error) {
+                                            toast({
+                                                title: "Success",
+                                                description:
+                                                    "Cluster deleted successfully",
+                                                status: "success",
+                                                duration: 5000,
+                                                isClosable: true
+                                            })
+                                            setLoading(false)
+                                            router.push("/console")
+                                        } else {
+                                            toast({
+                                                title: "Please try again",
+                                                description: "An error occured",
+                                                status: "error",
+                                                duration: 5000,
+                                                isClosable: true
+                                            })
+                                            setLoading(false)
+                                        }
+                                    } catch (e) {
+                                        console.log(e)
+                                        toast({
+                                            title: "Please try again",
+                                            description: "An error occured",
+                                            status: "error",
+                                            duration: 5000,
+                                            isClosable: true
+                                        })
+                                        setLoading(false)
+                                    }
+                                }
+                            }}
+                            bgColor="transparent"
+                            fontSize="2xl"
+                            rounded="full"
+                            colorScheme="whiteAlpha"
+                            aria-label="Delete cluster"
+                            icon={<DeleteIcon />}
+                        />
+                    </HStack>
+                    <Text fontSize="md" fontWeight="medium" px={12}>
+                        {cluster.endpoint}
+                    </Text>
+                </VStack>
                 <RuleList
                     id={cluster.id}
                     title={cluster.name}
