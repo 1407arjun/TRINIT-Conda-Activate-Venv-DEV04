@@ -77,6 +77,7 @@ export const getServerSideProps = async (
             { id },
             { projection: { _id: 0 } }
         )
+        await client.close()
 
         if (cluster)
             return {

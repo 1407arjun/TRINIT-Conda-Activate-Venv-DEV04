@@ -38,6 +38,8 @@ export const getServerSideProps = async () => {
         const client = await mongoClient.connect()
         const collection = client.db("clusterbase").collection("clusters")
         const clusters = await collection.find().project({ _id: 0 }).toArray()
+        await client.close()
+
         return {
             props: { clusters }
         }
