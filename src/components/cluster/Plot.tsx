@@ -31,12 +31,12 @@ const Plot = ({
                     style={{ width: "100%" }}
                     data={[
                         {
-                            x: Object.values(data["SALES"]),
-                            y: Object.values(data["PRODUCTCODE"]),
+                            x: Object.values(data["MSRP"] || {}),
+                            y: Object.values(data["PRODUCTCODE"] || {}),
                             type: "scatter",
                             mode: "markers",
                             marker: {
-                                color: Object.values(data["Cluster"]),
+                                color: Object.values(data["Cluster"] || {}),
                                 sizemax: 30
                             },
                             opacity: 0.8,

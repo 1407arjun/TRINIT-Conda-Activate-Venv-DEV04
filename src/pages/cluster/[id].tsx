@@ -171,7 +171,78 @@ export const getServerSideProps = async (
         await client.close()
 
         if (cluster) {
-            const { data } = await axios.post("http://127.0.0.1:5000", {})
+            const { data } = await axios.post("http://127.0.0.1:5000", {
+                selection: [
+                    "QUANTITYORDERED",
+                    "PRICEEACH",
+                    "SALES",
+                    "PRODUCTLINE",
+                    "MSRP",
+                    "PRODUCTCODE",
+                    "CITY",
+                    "STATE",
+                    "CONTACTLASTNAME",
+                    "CONTACTFIRSTNAME",
+                    "STATUS"
+                ],
+                schema: [
+                    {
+                        id: "QUANTITYORDERED",
+                        type: "string",
+                        match: "partial"
+                    },
+                    {
+                        id: "PRICEEACH",
+                        type: "string",
+                        match: "partial"
+                    },
+                    {
+                        id: "SALES",
+                        type: "string",
+                        match: "partial"
+                    },
+                    {
+                        id: "PRODUCTLINE",
+                        type: "string",
+                        match: "partial"
+                    },
+                    {
+                        id: "MSRP",
+                        type: "string",
+                        match: "partial"
+                    },
+                    {
+                        id: "PRODUCTCODE",
+                        type: "string",
+                        match: "full"
+                    },
+                    {
+                        id: "CITY",
+                        type: "string",
+                        match: "partial"
+                    },
+                    {
+                        id: "STATE",
+                        type: "string",
+                        match: "partial"
+                    },
+                    {
+                        id: "CONTACTLASTNAME",
+                        type: "string",
+                        match: "partial"
+                    },
+                    {
+                        id: "CONTACTFIRSTNAME",
+                        type: "string",
+                        match: "partial"
+                    },
+                    {
+                        id: "STATUS",
+                        type: "string",
+                        match: "full"
+                    }
+                ]
+            })
             return {
                 props: { cluster, data }
             }

@@ -33,22 +33,24 @@ def index():
 
     f = open('./notebooks/package.json')
     loader = json.load(f)
-    selection = loader['selection']
+    # selection = loader['selection']
+    selection = request.json['selection']
     data = loader['data']
     data = pd.DataFrame.from_dict(data, orient='columns')
     subset = list(data[selection])
 
     # schema = loader['schema']
-    # schema = pd.DataFrame.from_dict(schema, orient='columns')
+    schema = request.json['schema']
+    schema = pd.DataFrame.from_dict(schema, orient='columns')
 
-    # full = schema[schema['match'] == 'full']
-    # full = list(full['id'])
-    # partial = schema[schema['match'] == 'partial']
-    # partial = list(partial['id'])
+    full = schema[schema['match'] == 'full']
+    full = list(full['id'])
+    partial = schema[schema['match'] == 'partial']
+    partial = list(partial['id'])
 
-    full = ['STATUS', 'PRODUCTCODE']
-    partial = ['QUANTITYORDERED', 'PRICEEACH', 'SALES', 'PRODUCTLINE',
-               'MSRP', 'CITY', 'STATE', 'CONTACTLASTNAME', 'CONTACTFIRSTNAME']
+    # full = ['STATUS', 'PRODUCTCODE']
+    # partial = ['QUANTITYORDERED', 'PRICEEACH', 'SALES', 'PRODUCTLINE',
+    #            'MSRP', 'CITY', 'STATE', 'CONTACTLASTNAME', 'CONTACTFIRSTNAME']
 
     subset = data[selection]
     data = subset.copy()
