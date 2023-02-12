@@ -51,18 +51,9 @@ flask run
 [Presentation.pdf](https://github.com/1407arjun/TRINIT-Conda-Activate-Venv-DEV04/files/10715125/Presentation.pdf)
 
 
+## Video Link
+<img src="https://user-images.githubusercontent.com/58286330/218289216-c9298d90-1acf-43ce-80d0-bf5fe79fc7c9.png" width=150 height=150/>
+In case, the QR code doesn't work. 
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+Link:  
+[Demo Video](https://drive.google.com/file/d/1tu9iZBOHp6umchmCFHlh-Nwg83wYeLlc/view?usp=sharing)
