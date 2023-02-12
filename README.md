@@ -7,7 +7,7 @@ Clusterbase is a system that is easily configurable on the number and type of pa
 ## <img src="https://cdn.iconscout.com/icon/free/png-512/laptop-user-1-1179329.png" width="32" height="32"> Getting Started
 To get a local copy up and running follow these simple steps.
 ### Prerequisites
-In order to get a copy of the project you will require you to have Node.js (v14+) and the NPM package manager installed. If you don't have it, you can download the latest version of Node.js from the [official website](https://nodejs.org/en/download/) which also installs the NPM package manager by default.
+In order to get a copy of the project you will require you to have Node.js (v14+) and the NPM package manager installed. If you don't have it, you can download the latest version of Node.js from the [official website](https://nodejs.org/en/download/) which also installs the NPM package manager by default. For Python, you will require a Python environment (like Anaconda) with Python version 3.9 and above.
 ### Installation
 Open the terminal in the folder in which you wish to clone the repository and enter the following command:
 ``` 
@@ -55,5 +55,4 @@ flask run
 <img src="https://user-images.githubusercontent.com/58286330/218289216-c9298d90-1acf-43ce-80d0-bf5fe79fc7c9.png" width=150 height=150/>
 In case, the QR code doesn't work. 
 
-Link:  
 [Demo Video](https://drive.google.com/file/d/1tu9iZBOHp6umchmCFHlh-Nwg83wYeLlc/view?usp=sharing)
