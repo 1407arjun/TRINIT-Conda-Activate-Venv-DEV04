@@ -25,7 +25,7 @@ const Selection = ({
             <FormControl>
                 <Select
                     onChange={handleXChange}
-                    defaultValue={rules[0].id || ""}>
+                    defaultValue={rules[0] ? rules[0].id : ""}>
                     {rules.map((r) => (
                         <option key={r.id} value={r.id}>
                             {r.id}
@@ -37,7 +37,9 @@ const Selection = ({
             <FormControl>
                 <Select
                     onChange={handleYChange}
-                    defaultValue={rules[1].id || rules[0].id || ""}>
+                    defaultValue={
+                        rules[1] ? rules[1].id : rules[0] ? rules[0].id : ""
+                    }>
                     {rules.map((r) => (
                         <option key={r.id} value={r.id}>
                             {r.id}

@@ -26,8 +26,10 @@ const Plot = ({
     >
     rules: Rule[]
 }) => {
-    const [x, setX] = useState(rules[0].id || "")
-    const [y, setY] = useState(rules[1].id || rules[0].id || "")
+    const [x, setX] = useState(rules[0] ? rules[0].id : "")
+    const [y, setY] = useState(
+        rules[1] ? rules[1].id : rules[0] ? rules[0].id : ""
+    )
 
     // useEffect(() => {
     //     processRules(rules, 3, setData)
