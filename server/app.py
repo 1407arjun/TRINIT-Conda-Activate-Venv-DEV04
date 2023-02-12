@@ -4,7 +4,7 @@ import numpy as np
 import requests
 from flask import Flask, request, jsonify
 from flask_cors import CORS, cross_origin
-
+from flask_socketio import SocketIO, emit
 from sklearn.cluster import KMeans
 from sklearn.cluster import SpectralClustering
 from sklearn.mixture import GaussianMixture
@@ -19,11 +19,37 @@ import plotly.io as pio
 from sklearn.metrics import silhouette_score
 
 app = Flask(__name__)
+CORS(app, resources={r"/*": {"origins": "*"}})
+socketio = SocketIO(app, cors_allowed_origins="*")
 
 
 @app.route('/')
 def home():
-    return "Hello world"
+    f = open('./notebooks/package.json')
+    loader = json.load(f)
+    return loader
+
+
+# @socketio.on("connect")
+# def connected():
+#     """event listener when client connects to the server"""
+#     print(request.sid)
+#     print("client has connected")
+#     emit("connect", {"data": f"id: {request.sid} is connected"})
+
+
+# @socketio.on('data')
+# def handle_message(data):
+#     """event listener when client types a message"""
+#     print("data from the front end: ", str(data))
+#     emit("data", {'data': data, 'id': request.sid}, broadcast=True)
+
+
+# @socketio.on("disconnect")
+# def disconnected():
+#     """event listener when client disconnects to the server"""
+#     print("user disconnected")
+#     emit("disconnect", f"user {request.sid} disconnected", broadcast=True)
 
 
 @app.route('/', methods=['POST'])
@@ -31,19 +57,16 @@ def home():
 def index():
     """data=requests.json"""
 
-    f = open('./notebooks/package.json')
-    loader = json.load(f)
     # selection = loader['selection']
-    
     # schema = loader['schema']
-    if(request.json['rules']==[]):
+    if (request.json['rules'] == []):
         return {}
     else:
         schema = request.json['rules']
         schema = pd.DataFrame.from_dict(schema, orient='columns')
 
         selection = schema['id']
-        data = loader['data']
+        data = requests.get("http://127.0.0.1:5000/").json()['data']
         data = pd.DataFrame.from_dict(data, orient='columns')
         subset = list(data[selection])
 
@@ -51,7 +74,6 @@ def index():
         full = list(full['id'])
         partial = schema[schema['match'] == 'partial']
         partial = list(partial['id'])
-        
 
         # full = ['STATUS', 'PRODUCTCODE']
         # partial = ['QUANTITYORDERED', 'PRICEEACH', 'SALES', 'PRODUCTLINE',
@@ -64,11 +86,10 @@ def index():
         """Processing the FULL Dependencies variables"""
         Label_encoder = LabelEncoder()
         for item in full:
-            if(subset.dtypes[item]=='object'):
+            if (subset.dtypes[item] == 'object'):
                 subset[item] = Label_encoder.fit_transform(subset[item])
             else:
                 subset[[item]] = std.fit_transform(subset[[item]])
-
 
         """Processing the Partial Dependencies Variables"""
         categorial = []
@@ -93,7 +114,7 @@ def index():
 
         # elbowval = wcss.index(max(wcss))+2
 
-        count=int(request.json['count'])
+        count = int(request.json['count'])
 
         kmeans = KMeans(n_clusters=count, init="k-means++",
                         max_iter=500, n_init=10, random_state=123)
@@ -153,4 +174,4 @@ def index():
 
 
 if __name__ == '__main__':
-    app.run()
+    socketio.run()

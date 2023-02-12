@@ -21,6 +21,9 @@ import { useRouter } from "next/router"
 
 import { MongoClient, ServerApiVersion } from "mongodb"
 import axios from "axios"
+import { io } from "socket.io-client"
+import { Socket } from "socket.io"
+import { DefaultEventsMap } from "socket.io/dist/typed-events"
 
 const Cluster: NextPage<{
     cluster: ClusterType
@@ -34,9 +37,37 @@ const Cluster: NextPage<{
         [key: string]: { [key: string]: string | number }
     }>({})
 
-    useEffect(() => {
-        console.log(2)
-    }, [data])
+    // const [socketInstance, setSocketInstance] =
+    //     useState<Socket<DefaultEventsMap, DefaultEventsMap>>()
+
+    // useEffect(() => {
+    //     const socket = io("127.0.0.1:5000/", {
+    //         transports: ["websocket"],
+    //         //@ts-ignore
+    //         cors: {
+    //             origin: "http://localhost:3000/"
+    //         }
+    //     })
+
+    //     //@ts-ignore
+    //     setSocketInstance(socket)
+
+    //     socket.on("connect", () => {
+    //         console.log("Connected")
+    //     })
+
+    //     socket.on("data", (data) => {
+    //         console.log(data)
+    //     })
+
+    //     socket.on("disconnect", (data) => {
+    //         console.log(data)
+    //     })
+
+    //     return function cleanup() {
+    //         socket.disconnect()
+    //     }
+    // }, [])
 
     return (
         <VStack

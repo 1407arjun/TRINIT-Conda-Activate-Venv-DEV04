@@ -4,3 +4,5 @@ requests
 flask
 scikit-learn
 plotly
+flask-cors
+flask-socketio
