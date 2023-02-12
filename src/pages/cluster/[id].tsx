@@ -164,6 +164,7 @@ const Cluster: NextPage<{
                 <RuleList
                     id={cluster.id}
                     title={cluster.name}
+                    endpoint={cluster.endpoint}
                     rules={rules}
                     setRules={setRules}
                     setData={setData}

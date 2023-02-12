@@ -34,12 +34,14 @@ import processRules from "../../util/processRules"
 const List = ({
     id,
     title,
+    endpoint,
     rules,
     setRules,
     setData
 }: {
     id: string
     title: string
+    endpoint: string
     rules: Rule[]
     setRules: Dispatch<SetStateAction<Rule[]>>
     setData: Dispatch<
@@ -151,7 +153,12 @@ const List = ({
                                         duration: 5000,
                                         isClosable: true
                                     })
-                                    await processRules(rules, count, setData)
+                                    await processRules(
+                                        rules,
+                                        count,
+                                        endpoint,
+                                        setData
+                                    )
                                 } else {
                                     toast({
                                         title: "Please try again",

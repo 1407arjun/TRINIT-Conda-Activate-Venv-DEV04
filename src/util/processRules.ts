@@ -5,6 +5,7 @@ import type Rule from "../types/Rule"
 const processRules = async (
     rules: Rule[],
     count: number,
+    endpoint: string,
     setData: Dispatch<
         SetStateAction<{
             [key: string]: { [key: string]: string | number }
@@ -14,9 +15,9 @@ const processRules = async (
     try {
         const { data } = await axios.post("/api/process", {
             rules,
-            count
+            count,
+            endpoint
         })
-        console.log(data)
         setData(data)
     } catch (e) {
         console.log(e)

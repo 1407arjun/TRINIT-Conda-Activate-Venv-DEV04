@@ -20,7 +20,7 @@ from sklearn.metrics import silhouette_score
 
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}})
-socketio = SocketIO(app, cors_allowed_origins="*")
+# socketio = SocketIO(app, cors_allowed_origins="*")
 
 
 @app.route('/')
@@ -66,7 +66,7 @@ def index():
         schema = pd.DataFrame.from_dict(schema, orient='columns')
 
         selection = schema['id']
-        data = requests.get("http://127.0.0.1:5000/").json()['data']
+        data = requests.get(request.json['endpoint']).json()['data']
         data = pd.DataFrame.from_dict(data, orient='columns')
         subset = list(data[selection])
 
@@ -174,4 +174,5 @@ def index():
 
 
 if __name__ == '__main__':
-    socketio.run()
+    # socketio.run()
+    app.run()

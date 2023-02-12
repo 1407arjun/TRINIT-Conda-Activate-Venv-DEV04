@@ -1,7 +1,7 @@
 import { GridItem, Link, Spacer, Text, VStack } from "@chakra-ui/react"
 import type Cluster from "../../types/Cluster"
 
-const Item = ({ name, id, rules }: Cluster) => {
+const Item = ({ name, id, rules, endpoint }: Cluster) => {
     return (
         <GridItem
             bgColor="white"
@@ -19,7 +19,7 @@ const Item = ({ name, id, rules }: Cluster) => {
                 </Text>
                 <Spacer />
                 <Text fontSize="md" fontWeight="semibold" color="gray.500">
-                    {rules.length} rules
+                    {endpoint}
                 </Text>
             </VStack>
         </GridItem>
