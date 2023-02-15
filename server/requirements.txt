@@ -4,5 +4,4 @@ requests
 Flask
 Gunicorn
 scikit-learn
-flask-cors
 flask-socketio

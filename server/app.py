@@ -2,7 +2,6 @@ import json
 import pandas as pd
 import requests
 from flask import Flask, request, jsonify
-from flask_cors import CORS, cross_origin
 from flask_socketio import SocketIO, emit
 from sklearn.cluster import KMeans
 from sklearn.cluster import SpectralClustering
@@ -13,7 +12,6 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics import silhouette_score
 
 app = Flask(__name__)
-CORS(app, resources={r"/*": {"origins": "*"}})
 # socketio = SocketIO(app, cors_allowed_origins="*")
 
 
@@ -47,7 +45,6 @@ def home():
 
 
 @app.route('/', methods=['POST'])
-@cross_origin()
 def index():
     """data=requests.json"""
 
