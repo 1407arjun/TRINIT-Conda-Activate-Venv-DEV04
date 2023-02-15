@@ -1,6 +1,5 @@
 import json
 import pandas as pd
-import numpy as np
 import requests
 from flask import Flask, request, jsonify
 from flask_cors import CORS, cross_origin
@@ -11,11 +10,6 @@ from sklearn.mixture import GaussianMixture
 from sklearn.preprocessing import OneHotEncoder, LabelEncoder, StandardScaler, MinMaxScaler
 from sklearn.decomposition import PCA
 from sklearn.feature_extraction.text import TfidfVectorizer
-import plotly.figure_factory as ff
-import plotly.express as px
-import plotly.graph_objects as go
-import plotly.graph_objects as go
-import plotly.io as pio
 from sklearn.metrics import silhouette_score
 
 app = Flask(__name__)

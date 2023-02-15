@@ -1,8 +1,8 @@
 pandas
 numpy
 requests
-flask
+Flask
+Gunicorn
 scikit-learn
-plotly
 flask-cors
 flask-socketio
